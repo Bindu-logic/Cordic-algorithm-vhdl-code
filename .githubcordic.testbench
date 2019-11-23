@@ -1,0 +1,116 @@
+--------------------------------------------------------------------------------
+-- Company:
+-- Engineer:
+--
+-- Create Date:   15:12:05 11/21/2019
+-- Design Name:  
+-- Module Name:   C:/Users/student/Desktop/CCU/cordic/tb11.vhd
+-- Project Name:  cordic
+-- Target Device:  
+-- Tool versions:  
+-- Description:  
+--
+-- VHDL Test Bench Created by ISE for module: bcd_2_bin
+--
+-- Dependencies:
+--
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+--
+-- Notes:
+-- This testbench has been automatically generated using types std_logic and
+-- std_logic_vector for the ports of the unit under test.  Xilinx recommends
+-- that these types always be used for the top-level I/O of a design in order
+-- to guarantee that the testbench will bind correctly to the post-implementation
+-- simulation model.
+--------------------------------------------------------------------------------
+LIBRARY ieee;
+use IEEE.STD_LOGIC_1164.ALL;
+USE ieee.numeric_std.all;
+ 
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
+ 
+ENTITY tb11 IS
+END tb11;
+ 
+ARCHITECTURE behavior OF tb11 IS
+ 
+    -- Component Declaration for the Unit Under Test (UUT)
+ 
+    COMPONENT bcd_2_bin
+    PORT(
+         clk : IN  std_logic;
+         Reset : IN  std_logic;
+         bcd_in_0 : IN  unsigned(3 downto 0);
+         bcd_in_10 : IN  unsigned(3 downto 0);
+         bcd_in_100 : IN  unsigned(3 downto 0);
+         sign : IN  std_logic;
+         Xout : OUT  unsigned(15 downto 0);
+         Yout : OUT  unsigned(15 downto 0)
+        );
+    END COMPONENT;
+   
+
+   --Inputs
+   signal clk : std_logic := '0';
+   signal Reset : std_logic := '0';
+   signal bcd_in_0 : unsigned(3 downto 0) := (others => '0');
+   signal bcd_in_10 : unsigned(3 downto 0) := (others => '0');
+   signal bcd_in_100 : unsigned(3 downto 0) := (others => '0');
+   signal sign : std_logic := '0';
+
+  --Outputs
+   signal Xout : unsigned(15 downto 0);
+   signal Yout : unsigned(15 downto 0);
+
+   -- Clock period definitions
+   constant clk_period : time := 10 ns;
+ 
+BEGIN
+ 
+-- Instantiate the Unit Under Test (UUT)
+   uut: bcd_2_bin PORT MAP (
+          clk => clk,
+          Reset => Reset,
+          bcd_in_0 => bcd_in_0,
+          bcd_in_10 => bcd_in_10,
+          bcd_in_100 => bcd_in_100,
+          sign => sign,
+          Xout => Xout,
+          Yout => Yout
+        );
+
+   -- Clock process definitions
+   clk_process :process
+   begin
+clk <= '0';
+wait for clk_period/2;
+clk <= '1';
+wait for clk_period/2;
+   end process;
+ 
+
+   -- Stimulus process
+   stim_proc: process
+   begin
+      -- hold reset state for 100 ns.
+      wait for 100 ns;
+
+      wait for clk_period*10;
+
+      -- insert stimulus here
+bcd_in_0 <= x"0"; bcd_in_10 <= x"1"; bcd_in_100 <= x"0"; sign<='0';
+--bcd_in_1000 <=x"3";
+wait for 100 ns;
+bcd_in_0 <= x"5"; bcd_in_10 <= x"3"; bcd_in_100 <= x"1";sign<='1';
+ --bcd_in_1000 <=x"9";
+wait for 100 ns;
+bcd_in_0 <= x"5"; bcd_in_10 <= x"4"; bcd_in_100 <= x"0";sign<='1';
+
+      wait;
+   end process;
+
+END;
